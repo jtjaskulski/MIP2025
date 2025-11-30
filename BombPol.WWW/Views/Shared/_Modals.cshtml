@@ -1,0 +1,232 @@
+﻿<!-- Shopping Cart Modal -->
+<div class="modal" id="cartModal">
+    <div class="modal-content cart-modal">
+        <div class="modal-header">
+            <h2>Koszyk zakupów</h2>
+            <button class="modal-close" id="closeCart">&times;</button>
+        </div>
+        <div class="modal-body" id="cartContent">
+            <div id="cartItems"></div>
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Suma częściowa:</span>
+                    <span id="subtotal">0.00 PLN</span>
+                </div>
+                <div class="summary-row">
+                    <span>Wysyłka:</span>
+                    <span id="shipping">15.00 PLN</span>
+                </div>
+                <div class="summary-row">
+                    <span>Podatek (VAT):</span>
+                    <span id="tax">0.00 PLN</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Razem:</span>
+                    <span id="total">0.00 PLN</span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="continueShopping">Kontynuuj zakupy</button>
+            <button class="btn btn-primary" id="proceedCheckout">Przejdź do kasy</button>
+        </div>
+    </div>
+</div>
+
+<!-- Product Detail Modal -->
+<div class="modal" id="productModal">
+    <div class="modal-content product-modal">
+        <div class="modal-header">
+            <h2 id="modalProductName"></h2>
+            <button class="modal-close" id="closeProduct">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="product-detail-grid">
+                <div class="product-image-large">
+                    <div class="placeholder-image large">📦</div>
+                </div>
+                <div class="product-info-detail">
+                    <div class="product-rating" id="modalRating"></div>
+                    <p class="product-price-large" id="modalPrice"></p>
+                    <p class="product-description-full" id="modalDescription"></p>
+                    <div class="quantity-selector">
+                        <label>Ilość:</label>
+                        <button class="qty-btn" onclick="decreaseModalQty()">-</button>
+                        <input type="number" id="modalQuantity" value="1" min="1" max="99">
+                        <button class="qty-btn" onclick="increaseModalQty()">+</button>
+                    </div>
+                    <div class="product-actions-detail">
+                        <button class="btn btn-primary btn-full-width" onclick="addToCartFromModal()">Dodaj do koszyka</button>
+                        <button class="btn btn-outline btn-full-width">❤️ Dodaj do ulubionych</button>
+                    </div>
+                    <div class="product-specs">
+                        <h3>Specyfikacja</h3>
+                        <table>
+                            <tr><td>Czas palenia:</td><td>60 sekund</td></tr>
+                            <tr><td>Efekt:</td><td>Światło/Hałas</td></tr>
+                            <tr><td>Klasa:</td><td>K3</td></tr>
+                            <tr><td>Bezpieczna odległość:</td><td>8 metrów</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Checkout Page -->
+<div class="page" id="checkoutPage" style="display: none;">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="#" onclick="showPage('home')">Home</a> &gt;
+            <a href="#" onclick="showCart()">Koszyk</a> &gt;
+            <span>Zamówienie</span>
+        </div>
+
+        <h1>Finalizacja zamówienia</h1>
+
+        <div class="progress-steps">
+            <div class="step active">1. Koszyk</div>
+            <div class="step active">2. Dostawa</div>
+            <div class="step">3. Płatność</div>
+            <div class="step">4. Potwierdzenie</div>
+        </div>
+
+        <div class="checkout-grid">
+            <div class="checkout-form">
+                <div class="form-section">
+                    <h2>Adres dostawy</h2>
+                    <form id="checkoutForm">
+                        <div class="form-group">
+                            <label class="form-label">Imię i nazwisko</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Telefon</label>
+                            <input type="tel" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ulica i numer</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Kod pocztowy</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Miasto</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h2>Metoda płatności</h2>
+                    <div class="payment-methods">
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="card" checked>
+                            <span>💳 Karta kredytowa/debetowa</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="transfer">
+                            <span>🏦 Przelew bankowy</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="cod">
+                            <span>📦 Płatność przy odbiorze</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-summary">
+                <div class="card">
+                    <div class="card__body">
+                        <h3>Podsumowanie zamówienia</h3>
+                        <div id="checkoutItems"></div>
+                        <hr>
+                        <div class="summary-row">
+                            <span>Suma częściowa:</span>
+                            <span id="checkoutSubtotal">0.00 PLN</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Wysyłka:</span>
+                            <span id="checkoutShipping">15.00 PLN</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Podatek (VAT):</span>
+                            <span id="checkoutTax">0.00 PLN</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Razem:</span>
+                            <span id="checkoutTotal">0.00 PLN</span>
+                        </div>
+                        <button class="btn btn-primary btn-full-width" onclick="placeOrder()">Złóż zamówienie</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Results Page -->
+<div class="page" id="searchPage" style="display: none;">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="#" onclick="showPage('home')">Home</a> &gt;
+            <span>Wyniki wyszukiwania</span>
+        </div>
+
+        <h1>Wyniki wyszukiwania: "<span id="searchTerm"></span>"</h1>
+
+        <div class="search-layout">
+            <aside class="filters-sidebar">
+                <div class="filter-section">
+                    <h3>Kategoria</h3>
+                    <label><input type="checkbox" value="Hałasowe" onchange="applyFilters()"> Hałasowe</label>
+                    <label><input type="checkbox" value="Świetlne" onchange="applyFilters()"> Świetlne</label>
+                    <label><input type="checkbox" value="Zestawy" onchange="applyFilters()"> Zestawy</label>
+                </div>
+                <div class="filter-section">
+                    <h3>Cena</h3>
+                    <label><input type="radio" name="price" value="all" checked onchange="applyFilters()"> Wszystkie</label>
+                    <label><input type="radio" name="price" value="0-50" onchange="applyFilters()"> 0 - 50 PLN</label>
+                    <label><input type="radio" name="price" value="50-100" onchange="applyFilters()"> 50 - 100 PLN</label>
+                    <label><input type="radio" name="price" value="100+" onchange="applyFilters()"> 100+ PLN</label>
+                </div>
+                <div class="filter-section">
+                    <h3>Ocena</h3>
+                    <label><input type="checkbox" value="5" onchange="applyFilters()"> ⭐⭐⭐⭐⭐</label>
+                    <label><input type="checkbox" value="4" onchange="applyFilters()"> ⭐⭐⭐⭐ i więcej</label>
+                </div>
+            </aside>
+
+            <div class="search-results">
+                <div class="results-header">
+                    <p id="resultsCount">Znaleziono 0 produktów</p>
+                    <select class="form-control" style="width: auto;" onchange="sortResults(this.value)">
+                        <option value="default">Sortuj według</option>
+                        <option value="price-asc">Cena: rosnąco</option>
+                        <option value="price-desc">Cena: malejąco</option>
+                        <option value="name">Nazwa A-Z</option>
+                        <option value="rating">Najwyżej oceniane</option>
+                    </select>
+                </div>
+                <div class="products-grid" id="searchResults"></div>
+                <div class="pagination">
+                    <button class="btn btn-outline">« Poprzednia</button>
+                    <button class="btn btn-primary">1</button>
+                    <button class="btn btn-outline">2</button>
+                    <button class="btn btn-outline">3</button>
+                    <button class="btn btn-outline">Następna »</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

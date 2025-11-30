@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BombPol.WWW</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BombPol.WWW.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+
+    @await Html.PartialAsync("_Navigation")
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            @RenderBody()
+        </div>
+    </section>
+
+    @await Html.PartialAsync("_Products")
+    @await Html.PartialAsync("_Categories")
+    @await Html.PartialAsync("_Testimonials")
+    @await Html.PartialAsync("_Footer")
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await Html.PartialAsync("_Modals")
+</body>
+</html>

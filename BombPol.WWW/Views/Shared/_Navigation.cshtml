@@ -1,0 +1,39 @@
+﻿<header class="header" id="mainHeader">
+    <div class="header-container">
+        <div class="logo">
+            <span class="logo-icon">🎆</span>
+            <span class="logo-text">BombPol</span>
+        </div>
+
+        <nav class="nav" id="mainNav">
+            <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Index</a>
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </nav>
+
+        <div class="header-actions">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Szukaj produktów..." id="searchInput">
+                <button class="search-btn" id="searchBtn">🔍</button>
+            </div>
+
+            <div class="user-menu">
+                <button class="user-btn" id="userBtn">👤</button>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="#login">Zaloguj się</a>
+                    <a href="#register">Zarejestruj się</a>
+                </div>
+            </div>
+
+            <button class="cart-btn" id="cartBtn">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</header>
