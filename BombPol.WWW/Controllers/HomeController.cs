@@ -6,9 +6,9 @@ namespace BombPol.WWW.Controllers
 {
     public class HomeController(ILogger<HomeController> logger) : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(Guid? id = null)
         {
-            return View();
+            return View(id);
         }
 
         public IActionResult Privacy()

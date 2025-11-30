@@ -1,0 +1,35 @@
+﻿@model IEnumerable<BombPol.Data.Entities.Category>
+
+<section class="categories-section" id="kategorie">
+    <div class="container">
+        <h2 class="section-title">Kategorie Produktów</h2>
+        @if (Model?.Any() == true)
+        {
+            foreach (var item in Model)
+            {
+                <div class="categories-grid">
+                    <div class="category-card" data-category="@item.Name">
+                        <div class="category-icon">💥</div>
+                        <h3 class="category-title">@item.Name</h3>
+                        <p class="category-count">@item.Products?.Count()</p>
+                        @if (item.Products?.Any() == true)
+                        {
+                            @* 
+                            <button class="btn btn-outline" onclick="filterByCategory('@item.Name')">Zobacz produkty</button>              *@
+                            <a class="btn btn-outline" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="@item.Id">Zobacz produkty</a>
+                        }
+                    </div>
+                </div>
+            }
+        }else
+        {
+            <div class="categories-grid">
+                <div class="category-card" data-category="Brak">
+                    <div class="category-icon">💥</div>
+                    <h3 class="category-title">Brak</h3>
+                    <p class="category-count">0</p>
+                </div>
+            </div>
+        }
+    </div>
+</section>

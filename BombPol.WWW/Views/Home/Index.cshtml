@@ -1,6 +1,11 @@
-﻿@{
+﻿@model Guid?
+
+@{
     ViewData["Title"] = "Home Page";
 }
+
+<section class="hero" id="home">
+    <div class="hero-content">
         <h1 class="hero-title">Spektakularne Fajerwerki dla Każdej Okazji</h1>
         <p class="hero-subtitle">Największy wybór fajerwerków, petard i ogni bengalskich w Polsce. Wysoka jakość i bezpieczne użytkowanie.</p>
         <div class="hero-buttons">
@@ -9,3 +14,4 @@
         </div>
     </div>
 </section>
+@await Component.InvokeAsync("ProductsComponent", Model)

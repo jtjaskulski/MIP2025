@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BombPol.Data;
 using BombPol.Data.Entities;
+using BombPol.Data.Extensions;
 
 namespace BombPol.Intranet.Controllers
 {
@@ -18,7 +19,9 @@ namespace BombPol.Intranet.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            var bombPolContext = _context.Product.Include(p => p.Category);
+            var bombPolContext = _context.Product
+                .Include(p => p.Category)
+                .FilterOutDeleted();
             return View(await bombPolContext.ToListAsync());
         }
 
@@ -32,6 +35,7 @@ namespace BombPol.Intranet.Controllers
 
             var product = await _context.Product
                 .Include(p => p.Category)
+                .FilterOutDeleted()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -44,7 +48,7 @@ namespace BombPol.Intranet.Controllers
         // GET: Product/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
             return View();
         }
 
@@ -62,7 +66,7 @@ namespace BombPol.Intranet.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category.FilterOutDeleted(), "Id", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -74,12 +78,13 @@ namespace BombPol.Intranet.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product.FindAsync(id);
+            var product = await _context.Product.FilterOutDeleted()
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category.FilterOutDeleted(), "Id", "Id", product.CategoryId);
             return View(product);
         }
 
@@ -115,7 +120,7 @@ namespace BombPol.Intranet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category.FilterOutDeleted(), "Id", "Id", product.CategoryId);
             return View(product);
         }
 
@@ -129,6 +134,7 @@ namespace BombPol.Intranet.Controllers
 
             var product = await _context.Product
                 .Include(p => p.Category)
+                .FilterOutDeleted()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -143,7 +149,8 @@ namespace BombPol.Intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var product = await _context.Product.FindAsync(id);
+            var product = await _context.Product.FilterOutDeleted()
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (product != null)
             {
                 _context.Product.Remove(product);
@@ -155,7 +162,7 @@ namespace BombPol.Intranet.Controllers
 
         private bool ProductExists(Guid id)
         {
-            return _context.Product.Any(e => e.Id == id);
+            return _context.Product.FilterOutDeleted().Any(e => e.Id == id);
         }
     }
 }

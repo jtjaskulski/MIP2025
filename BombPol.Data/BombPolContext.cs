@@ -14,6 +14,7 @@ namespace BombPol.Data
         public DbSet<Order> Order { get; set; } = default!;
         public DbSet<Product> Product { get; set; } = default!;
         public DbSet<OrderItem> OrderItem { get; set; } = default!;
+        public DbSet<NavigationLink> NavigationLinks { get; set; } = default!;
 
         public override int SaveChanges()
         {

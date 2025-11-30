@@ -1,0 +1,98 @@
+﻿@model IEnumerable<BombPol.Data.Entities.Product>
+
+<section class="products-section" id="produkty">
+    <div class="container">
+        <h2 class="section-title">Nasze Bestsellery</h2>
+        <div class="products-grid" id="productsGrid">
+            @if (Model?.Any() == true)
+            {
+                foreach (var item in Model)
+                {
+                    <div class="product-card" data-product-id="@item.Id">
+                        <div class="product-image">
+                            <div class="placeholder-image">📦</div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">@item.Name</h3>
+                            <div class="product-rating">
+                                <span>⭐</span>
+                                <span>⭐</span>
+                                <span>⭐</span>
+                                <span>⭐</span>
+                                <span>⭐</span>
+                                @* @{
+                                    var fullStars = (int)item.Rating;
+                                    var halfStar = item.Rating - fullStars >= 0.5 ? 1 : 0;
+                                    var emptyStars = 5 - fullStars - halfStar;
+                                }
+                                @for (int i = 0; i < fullStars; i++)
+                                {
+                                    <span>⭐</span>
+                                }
+                                @if (halfStar == 1)
+                                {
+                                    <span>⭐½</span>
+                                }
+                                @for (int i = 0; i < emptyStars; i++)
+                                {
+                                    <span>☆</span>
+                                } *@
+                            </div>
+                            <p class="product-price">@item.Price.ToString("C")</p>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary btn-full-width" onclick="openProductModal('@item.Id')">Szczegóły</button>
+                            <button class="btn btn-outline btn-full-width">❤️ Dodaj do ulubionych</button>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Brak dostępnych produktów.</p>
+            }
+        </div>
+    </div>
+</section>
+
+
+<!-- Product Detail Modal -->
+<div class="modal" id="productModal">
+    <div class="modal-content product-modal">
+        <div class="modal-header">
+            <h2 id="modalProductName"></h2>
+            <button class="modal-close" id="closeProduct">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="product-detail-grid">
+                <div class="product-image-large">
+                    <div class="placeholder-image large">📦</div>
+                </div>
+                <div class="product-info-detail">
+                    <div class="product-rating" id="modalRating"></div>
+                    <p class="product-price-large" id="modalPrice"></p>
+                    <p class="product-description-full" id="modalDescription"></p>
+                    <div class="quantity-selector">
+                        <label>Ilość:</label>
+                        <button class="qty-btn" onclick="decreaseModalQty()">-</button>
+                        <input type="number" id="modalQuantity" value="1" min="1" max="99">
+                        <button class="qty-btn" onclick="increaseModalQty()">+</button>
+                    </div>
+                    <div class="product-actions-detail">
+                        <button class="btn btn-primary btn-full-width" onclick="addToCartFromModal()">Dodaj do koszyka</button>
+                        <button class="btn btn-outline btn-full-width">❤️ Dodaj do ulubionych</button>
+                    </div>
+                    <div class="product-specs">
+                        <h3>Specyfikacja</h3>
+                        <table>
+                            <tr><td>Czas palenia:</td><td>60 sekund</td></tr>
+                            <tr><td>Efekt:</td><td>Światło/Hałas</td></tr>
+                            <tr><td>Klasa:</td><td>K3</td></tr>
+                            <tr><td>Bezpieczna odległość:</td><td>8 metrów</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,6 @@
-﻿<header class="header" id="mainHeader">
+﻿@model IEnumerable<BombPol.Data.Entities.NavigationLink>
+
+<header class="header" id="mainHeader">
     <div class="header-container">
         <div class="logo">
             <span class="logo-icon">🎆</span>
@@ -6,8 +8,18 @@
         </div>
 
         <nav class="nav" id="mainNav">
-            <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Index</a>
-            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Index</a> 
+            @foreach (var item in Model)
+            {
+                @if (!string.IsNullOrEmpty(item.Url))
+                {
+                    <a class="nav-link" href="@item.Url">@item.LinkTitle</a>
+                }
+                else
+                {
+                    <a class="nav-link" asp-area="" asp-controller="@item.ControllerName" asp-action="@item.ControllerAction">@item.LinkTitle</a>    
+                }
+            }
         </nav>
 
         <div class="header-actions">

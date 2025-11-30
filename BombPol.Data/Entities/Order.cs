@@ -9,7 +9,13 @@
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
         public DateTime? ShippedAt { get; set; }
         public DateTime? DeliveredAt { get; set; }
-        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public ICollection<OrderItem>? OrderItems { get; set; } = new List<OrderItem>();
+
+        public Order()
+            : base(Guid.Empty)
+        {
+            
+        }
 
         public Order(Guid id, string customerName, string customerEmail, string customerPhone, decimal totalAmount)
             : base(id)

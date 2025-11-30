@@ -156,23 +156,23 @@ function setupEventListeners() {
 }
 
 // Render products
-function renderProducts(products = appState.products) {
-    const grid = document.getElementById('productsGrid');
-    grid.innerHTML = products.map(product => `
-    <div class="product-card" onclick="showProductDetail(${product.id})">
-      <div class="product-image">📦</div>
-      <span class="product-badge">${product.category}</span>
-      <h3 class="product-name">${product.name}</h3>
-      <div class="product-rating">${'⭐'.repeat(product.rating)}</div>
-      <p class="product-description">${product.description}</p>
-      <p class="product-price">${product.price.toFixed(2)} PLN</p>
-      <div class="product-actions">
-        <button class="btn btn-primary" onclick="event.stopPropagation(); addToCart(${product.id})">Dodaj do koszyka</button>
-        <button class="btn btn-outline" onclick="event.stopPropagation(); showProductDetail(${product.id})">Szczegóły</button>
-      </div>
-    </div>
-  `).join('');
-}
+//function renderProducts(products = appState.products) {
+//    const grid = document.getElementById('productsGrid');
+//    grid.innerHTML = products.map(product => `
+//    <div class="product-card" onclick="showProductDetail(${product.id})">
+//      <div class="product-image">📦</div>
+//      <span class="product-badge">${product.category}</span>
+//      <h3 class="product-name">${product.name}</h3>
+//      <div class="product-rating">${'⭐'.repeat(product.rating)}</div>
+//      <p class="product-description">${product.description}</p>
+//      <p class="product-price">${product.price.toFixed(2)} PLN</p>
+//      <div class="product-actions">
+//        <button class="btn btn-primary" onclick="event.stopPropagation(); addToCart(${product.id})">Dodaj do koszyka</button>
+//        <button class="btn btn-outline" onclick="event.stopPropagation(); showProductDetail(${product.id})">Szczegóły</button>
+//      </div>
+//    </div>
+//  `).join('');
+//}
 
 // Add to cart
 function addToCart(productId) {

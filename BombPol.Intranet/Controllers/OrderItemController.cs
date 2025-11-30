@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BombPol.Data;
 using BombPol.Data.Entities;
+using BombPol.Data.Extensions;
 
 namespace BombPol.Intranet.Controllers
 {
@@ -18,7 +19,7 @@ namespace BombPol.Intranet.Controllers
         // GET: OrderItem
         public async Task<IActionResult> Index()
         {
-            var bombPolContext = _context.OrderItem.Include(o => o.Order).Include(o => o.Product);
+            var bombPolContext = _context.OrderItem.Include(o => o.Order).Include(o => o.Product).FilterOutDeleted();
             return View(await bombPolContext.ToListAsync());
         }
 
@@ -33,6 +34,7 @@ namespace BombPol.Intranet.Controllers
             var orderItem = await _context.OrderItem
                 .Include(o => o.Order)
                 .Include(o => o.Product)
+                .FilterOutDeleted()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (orderItem == null)
             {
@@ -77,7 +79,7 @@ namespace BombPol.Intranet.Controllers
                 return NotFound();
             }
 
-            var orderItem = await _context.OrderItem.FindAsync(id);
+            var orderItem = await _context.OrderItem.FilterOutDeleted().FirstOrDefaultAsync(ord => ord.Id == id);
             if (orderItem == null)
             {
                 return NotFound();
@@ -135,6 +137,7 @@ namespace BombPol.Intranet.Controllers
             var orderItem = await _context.OrderItem
                 .Include(o => o.Order)
                 .Include(o => o.Product)
+                .FilterOutDeleted()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (orderItem == null)
             {
@@ -149,7 +152,7 @@ namespace BombPol.Intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var orderItem = await _context.OrderItem.FindAsync(id);
+            var orderItem = await _context.OrderItem.FilterOutDeleted().FilterOutDeleted().FirstOrDefaultAsync(ord => ord.Id == id);
             if (orderItem != null)
             {
                 _context.OrderItem.Remove(orderItem);
@@ -161,7 +164,7 @@ namespace BombPol.Intranet.Controllers
 
         private bool OrderItemExists(Guid id)
         {
-            return _context.OrderItem.Any(e => e.Id == id);
+            return _context.OrderItem.FilterOutDeleted().Any(e => e.Id == id);
         }
     }
 }

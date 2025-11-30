@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using BombPol.Data;
 using BombPol.Data.Entities;
+using BombPol.Data.Extensions;
 
 namespace BombPol.Intranet.Controllers
 {
@@ -17,7 +18,7 @@ namespace BombPol.Intranet.Controllers
         // GET: Order
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Order.ToListAsync());
+            return View(await _context.Order.FilterOutDeleted().ToListAsync());
         }
 
         // GET: Order/Details/5
@@ -28,7 +29,7 @@ namespace BombPol.Intranet.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Order
+            var order = await _context.Order.FilterOutDeleted()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
@@ -69,7 +70,7 @@ namespace BombPol.Intranet.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Order.FindAsync(id);
+            var order = await _context.Order.FilterOutDeleted().FirstOrDefaultAsync(ord => ord.Id == id);
             if (order == null)
             {
                 return NotFound();
@@ -120,7 +121,7 @@ namespace BombPol.Intranet.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Order
+            var order = await _context.Order.FilterOutDeleted()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
@@ -135,7 +136,7 @@ namespace BombPol.Intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var order = await _context.Order.FindAsync(id);
+            var order = await _context.Order.FilterOutDeleted().FirstOrDefaultAsync(ord => ord.Id == id);
             if (order != null)
             {
                 _context.Order.Remove(order);
@@ -147,7 +148,7 @@ namespace BombPol.Intranet.Controllers
 
         private bool OrderExists(Guid id)
         {
-            return _context.Order.Any(e => e.Id == id);
+            return _context.Order.FilterOutDeleted().Any(e => e.Id == id);
         }
     }
 }

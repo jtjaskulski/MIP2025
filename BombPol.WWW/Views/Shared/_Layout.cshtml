@@ -10,17 +10,10 @@
 
 <body>
 
-    @await Html.PartialAsync("_Navigation")
-
-    <section class="hero" id="home">
-        <div class="hero-content">
-            @RenderBody()
-        </div>
-    </section>
-
-    @await Html.PartialAsync("_Products")
-    @await Html.PartialAsync("_Categories")
-    @await Html.PartialAsync("_Testimonials")
+    @await Component.InvokeAsync("NavigationLinksComponent")
+    @RenderBody()
+    @await Component.InvokeAsync("CategoriesComponent")
+    @await Component.InvokeAsync("TestimonialsComponent")
     @await Html.PartialAsync("_Footer")
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

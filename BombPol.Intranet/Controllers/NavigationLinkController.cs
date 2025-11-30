@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BombPol.Data;
 using BombPol.Data.Entities;
@@ -6,22 +11,22 @@ using BombPol.Data.Extensions;
 
 namespace BombPol.Intranet.Controllers
 {
-    public class CategoryController : Controller
+    public class NavigationLinkController : Controller
     {
         private readonly BombPolContext _context;
 
-        public CategoryController(BombPolContext context)
+        public NavigationLinkController(BombPolContext context)
         {
             _context = context;
         }
 
-        // GET: Category
+        // GET: NavigationLink
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Category.FilterOutDeleted().ToListAsync());
+            return View(await _context.NavigationLinks.FilterOutDeleted().ToListAsync());
         }
 
-        // GET: Category/Details/5
+        // GET: NavigationLink/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -29,40 +34,41 @@ namespace BombPol.Intranet.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.FilterOutDeleted()
+            var navigationLink = await _context.NavigationLinks
+                .FilterOutDeleted()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            if (navigationLink == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(navigationLink);
         }
 
-        // GET: Category/Create
+        // GET: NavigationLink/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Category/Create
+        // POST: NavigationLink/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Id,DeletedAt,ModifiedAt,CreatedAt")] Category category)
+        public async Task<IActionResult> Create([Bind("LinkTitle,ControllerName,ControllerAction,Url,Id,DeletedAt,ModifiedAt,CreatedAt")] NavigationLink navigationLink)
         {
             if (ModelState.IsValid)
             {
-                category.Id = Guid.NewGuid();
-                _context.Add(category);
+                navigationLink.Id = Guid.NewGuid();
+                _context.Add(navigationLink);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(navigationLink);
         }
 
-        // GET: Category/Edit/5
+        // GET: NavigationLink/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -70,22 +76,24 @@ namespace BombPol.Intranet.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.FilterOutDeleted().FirstOrDefaultAsync(cat => cat.Id == id);
-            if (category == null)
+            var navigationLink = await _context.NavigationLinks
+                .FilterOutDeleted()
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (navigationLink == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(navigationLink);
         }
 
-        // POST: Category/Edit/5
+        // POST: NavigationLink/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Description,Id,DeletedAt,ModifiedAt,CreatedAt")] Category category)
+        public async Task<IActionResult> Edit(Guid id, [Bind("LinkTitle,ControllerName,ControllerAction,Url,Id,DeletedAt,ModifiedAt,CreatedAt")] NavigationLink navigationLink)
         {
-            if (id != category.Id)
+            if (id != navigationLink.Id)
             {
                 return NotFound();
             }
@@ -94,12 +102,12 @@ namespace BombPol.Intranet.Controllers
             {
                 try
                 {
-                    _context.Update(category);
+                    _context.Update(navigationLink);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!NavigationLinkExists(navigationLink.Id))
                     {
                         return NotFound();
                     }
@@ -110,10 +118,10 @@ namespace BombPol.Intranet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(navigationLink);
         }
 
-        // GET: Category/Delete/5
+        // GET: NavigationLink/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -121,34 +129,38 @@ namespace BombPol.Intranet.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.FilterOutDeleted()
+            var navigationLink = await _context.NavigationLinks
+                .FilterOutDeleted()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            if (navigationLink == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(navigationLink);
         }
 
-        // POST: Category/Delete/5
+        // POST: NavigationLink/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var category = await _context.Category.FindAsync(id);
-            if (category != null)
+            var navigationLink = await _context.NavigationLinks
+                .FilterOutDeleted()
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (navigationLink != null)
             {
-                _context.Category.Remove(category);
+                _context.NavigationLinks.Remove(navigationLink);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(Guid id)
+        private bool NavigationLinkExists(Guid id)
         {
-            return _context.Category.FilterOutDeleted().Any(e => e.Id == id);
+            return _context.NavigationLinks
+                .FilterOutDeleted().Any(e => e.Id == id);
         }
     }
 }
