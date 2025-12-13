@@ -1,0 +1,2 @@
+﻿$adbPath = "C:\Users\$env:USERNAME\AppData\Local\Android\Sdk\platform-tools"
+[Environment]::SetEnvironmentVariable("PATH", "$adbPath;$([Environment]::GetEnvironmentVariable('PATH', 'Machine'))", 'Machine')
