@@ -31,6 +31,8 @@ namespace BombPol.WWW
 
             app.UseAuthorization();
 
+            app.Services.SeedDatabaseAsync().Wait();
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
